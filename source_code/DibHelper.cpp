@@ -22,7 +22,7 @@ extern int show_performance;
 void logToFile(char *log_this) {
     FILE *f;
 	fopen_s(&f, "c:\\temp\\yo2", "a"); // this call fails if using the filter within flash player...
-	fprintf(f, log_this);
+	fprintf(f, "%s\n", log_this);
 	fclose(f);
 }
 
@@ -105,11 +105,10 @@ void AddMouse(HDC hMemDC, LPRECT lpRect, HDC hScrDC, HWND hwnd) {
 	::GetCursorInfo(&globalCursor);
 	HCURSOR hcur = globalCursor.hCursor;
 
+    GetCursorPos(&p);
 	if(hwnd)
 	  ScreenToClient(hwnd, &p); // 0.010ms
-	else
-	  GetCursorPos(&p);
-
+	
 	ICONINFO iconinfo;
 	BOOL ret = ::GetIconInfo(hcur, &iconinfo); // 0.09ms
 
@@ -404,7 +403,7 @@ int GetTrueScreenDepth(HDC hDC) {	// don't think I really use/rely on this metho
 
 int RetDepth = GetDeviceCaps(hDC, BITSPIXEL);
 
-if (RetDepth = 16) { // Find out if this is 5:5:5 or 5:6:5
+if (RetDepth == 16) { // Find out if this is 5:5:5 or 5:6:5
   HBITMAP hBMP = CreateCompatibleBitmap(hDC, 1, 1);
 
   HBITMAP hOldBMP = (HBITMAP)SelectObject(hDC, hBMP); // TODO do we need to delete this?
